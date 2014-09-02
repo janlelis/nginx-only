@@ -1,13 +1,22 @@
-#
-# Nginx Dockerfile
-#
-# https://github.com/dockerfile/nginx
-#
+# # #
+# nginx Dockerfile
+# # #
 
-# Pull base image.
-FROM dockerfile/ubuntu
+FROM ubuntu:trusty
+ENV DEBIAN_FRONTEND noninteractive
 
-# Install Nginx.
+# Ensure locale
+RUN apt-get -y update
+RUN dpkg-reconfigure locales && \
+  locale-gen en_US.UTF-8 && \
+  /usr/sbin/update-locale LANG=en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
+# Essential packages
+RUN apt-get -y update
+RUN apt-get -y install wget build-essential git
+
+# Install and adjust nginx
 RUN \
   add-apt-repository -y ppa:nginx/stable && \
   apt-get update && \
@@ -15,15 +24,13 @@ RUN \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   chown -R www-data:www-data /var/lib/nginx
 
-# Define mountable directories.
-VOLUME ["/data", "/etc/nginx/sites-enabled", "/etc/nginx/conf.d", "/var/log/nginx"]
-
-# Define working directory.
+# Cleaning
 WORKDIR /etc/nginx
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Define default command.
+# Docker settings
+VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/conf.d", "/var/log/nginx"]
+EXPOSE 80 443
 CMD ["nginx"]
 
-# Expose ports.
-EXPOSE 80
-EXPOSE 443
