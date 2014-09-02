@@ -25,13 +25,17 @@ RUN \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   chown -R www-data:www-data /var/lib/nginx
 
+# Make overwriting main config easier
+RUN mkdir /etc/nginx/from-docker
+RUN mv /etc/nginx/nginx.conf /etc/nginx/from-docker/nginx.conf
+
 # Cleaning
 WORKDIR /etc/nginx
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Docker settings
-VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/conf.d", "/var/log/nginx"]
+VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/from-docker", "/var/log/nginx"]
 EXPOSE 80 443
-CMD ["nginx"]
+CMD ["nginx -c /etc/nginx/from-docker/nginx.conf"]
 
