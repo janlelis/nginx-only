@@ -37,5 +37,6 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Docker settings
 VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/from-docker", "/var/log/nginx"]
 EXPOSE 80 443
-CMD ["nginx", "-c", "/etc/nginx/from-docker/nginx.conf"]
+ENTRYPOINT ["nginx", "-c", "/etc/nginx/from-docker/nginx.conf"]
+CMD []
 
