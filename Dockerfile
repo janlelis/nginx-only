@@ -18,9 +18,10 @@ RUN apt-get -y install wget build-essential git
 
 # Install and adjust nginx
 RUN \
+  apt-get -y install software-properties-common && \
   add-apt-repository -y ppa:nginx/stable && \
-  apt-get update && \
-  apt-get install -y nginx && \
+  apt-get -y update && \
+  apt-get -y install nginx && \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   chown -R www-data:www-data /var/lib/nginx
 
