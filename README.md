@@ -1,4 +1,4 @@
-## Dockerfile for nginx
+# janlelis/nginx-only
 
-Installs nginx from source on ubunt:trusty. Based on [dockerfile/nginx](https://github.com/dockerfile/nginx).
+A docker image that installs nginx from source on ubuntu:trusty. Based on [dockerfile/nginx](https://github.com/dockerfile/nginx).
 
